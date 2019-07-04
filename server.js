@@ -116,7 +116,6 @@ app.post('/upload', function(req, res){
                     return res.json({error_code:1, err_desc:err, data: null});
                 }
                 res.json({datos:"Los datos fueron agregados exitosamente"});
-                //res.json({error_code:0, err_desc:null, data: result});
 
                 let resultDos = fs.readFile("./outPutJSON/output.json", 'utf8', async (err, fileContents) => {
                     if (err) {
@@ -128,12 +127,7 @@ app.post('/upload', function(req, res){
                       console.log(data.length);
 
                       console.log(data);
-                    //   model.create(data, function (err) {
-                    //       if(err){
-                    //           console.log(err);
-                    //       }
-                    //   });
-
+                        
                       for(let cantidad = 0; cantidad < data.length; cantidad++){
                         var documento = data[cantidad];
                         var mod = new model(documento);
