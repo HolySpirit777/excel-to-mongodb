@@ -1,0 +1,53 @@
+app.get('/buscar-todos-casos/:caso', async function (req, res) {
+
+    let enviado = false;
+
+    await model.find(async function (err, personas){
+        if(err){
+            console.log(err);
+        }
+        else {
+            for (const casos of personas) {
+                if(casos.cedula === req.params.caso || casos.caso === req.params.caso || casos.nombre === req.params.caso) {
+                    this.enviado = true;
+                    return res.json({casos});
+                }
+            }
+
+            await completado.find(async function (err, completado) {
+                if(err) {
+                    console.log(err);
+                } else {
+                    for (const casos of completado) {
+                        if(casos.cedula === req.params.caso || casos.caso === req.params.caso) {
+                            this.enviado = true;
+                            return res.json({casos});
+                        }
+                    }                    
+
+                    await usuario.find(async function(err, usuario) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            for (const iterator of usuario) {
+                                for (const casos of iterator.casos) {
+                                    if(casos.cedula === req.params.caso || casos.caso === req.params.caso) {
+                                        this.enviado = true;
+                                        return res.json({casos});
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    console.log(enviado + ' fuera del if');
+    if(!enviado) {
+        io.emit('test event', 'Este caso no aparece en la base de datos!');
+        console.log(this.enviado + ' dentro del if');
+    }
+    return res.json({value: 'No se encontro su busqueda!'});
+});
